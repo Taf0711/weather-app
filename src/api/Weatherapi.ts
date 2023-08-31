@@ -13,9 +13,9 @@ interface WeatherApiResponse {
     };
 }
 
-export const fetchWeatherData =  async (city: string): Promise<WeatherApiResponse | null => {
+export const fetchWeatherData =  async (city: string): Promise<WeatherApiResponse | null> => {
     try {
-        const response = await axios.get('${BASE_URL}/current.json?key=${API_KEY}&sq=${city}');
+        const response = await axios.get(`${BASE_URL}/current.json?key=${API_KEY}&q=${city}&aqi=no`);
         return response.data;
     } catch (error) {
         console.error('Error fetching weather data:', error);

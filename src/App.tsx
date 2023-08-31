@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import SearchBar from './components/Searchbar';
 import CurrentWeather from './components/CurrentWeather';
 import { fetchWeatherData } from './api/Weatherapi';
+import { WeatherData } from './components/CurrentWeather';
 
 const App: React.FC = () => {
-  const [weatherData, setWeatherData] = useState<WeatherApiResponse | null>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData>()
   
   const handleSearch = async (city: string) => {
-    const data = await fetchWeatherData(city);
+    const data = (await fetchWeatherData(city));
     if (data) {
-      setWeatherData(data);
+      setWeatherData({
+        temperature: data.current.temp_c,
+        description: data.current.condition.text, 
+      });
     }
   };
 
@@ -19,10 +23,7 @@ const App: React.FC = () => {
       <SearchBar onSearch={handleSearch} />
       {weatherData && (
         <CurrentWeather
-          data={{
-            temperature: weatherData.current.temp_c,
-            description: weatherData.current.condition.text,
-          }}
+          data={weatherData}
         />
       )}
     </div>
